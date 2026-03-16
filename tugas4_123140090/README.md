@@ -39,8 +39,8 @@ app/src/main/java/com/.../myprofileapp/
 
 ##  Screenshot Aplikasi
 
-![Screenshot My Profile App](./screenshot.png)
-![Screenshot My Profile App](./screenshot_darkmode.png)
-![Screenshot My Profile App](./screenshot_editprofil.png)
+![Screenshot My Profile App](./Screenshot.png)
+![Screenshot My Profile App](./Screenshot_darkmode.png)
+![Screenshot My Profile App](./Screenshot_editprofil.png)
 
 ---
