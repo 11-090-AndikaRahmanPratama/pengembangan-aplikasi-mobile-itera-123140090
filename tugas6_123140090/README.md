@@ -34,11 +34,15 @@ Aplikasi ini menggunakan public API gratis untuk keperluan testing:
 
 | Loading State | News List (Success) | News Detail |
 | :---: | :---: | :---: |
-| ![Loading](https://placehold.co/200x400?text=Loading+State) | ![List](https://placehold.co/200x400?text=Success+State) | ![Detail](https://placehold.co/200x400?text=Detail+Screen) |
+| ![Loading](loading_state.png) | ![List](news_lists.png) | ![Detail](news_detail.png) |
 
 | Pull to Refresh | Offline Mode (Cache) | Error State |
 | :---: | :---: | :---: |
-| ![Refresh](https://placehold.co/200x400?text=Pull+to+Refresh) | ![Cache](https://placehold.co/200x400?text=Offline+Cache) | ![Error](https://placehold.co/200x400?text=Error+State) |
+| ![Refresh](pull_to_refresh.png) | ![Cache](offline_mode.png) | ![Error](error_state.png) |
+
+## Video Demo
+Silakan tonton demonstrasi aplikasi pada tautan berikut:
+**[https://drive.google.com/file/d/1B3hKePTvHl6LM9gct5Iw4FDlkxGTuuE2/view?usp=sharing]**
 
 ## 📦 Cara Menjalankan
 1. Clone repository ini.
