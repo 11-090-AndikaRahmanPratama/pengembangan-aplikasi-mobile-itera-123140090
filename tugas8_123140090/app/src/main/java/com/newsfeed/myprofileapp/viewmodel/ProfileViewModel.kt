@@ -14,7 +14,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 
 class ProfileViewModel(
-    // Tambahin sensor di constructor buat Koin
     private val deviceInfo: DeviceInfo,
     private val batteryInfo: BatteryInfo,
     private val networkMonitor: NetworkMonitor
@@ -22,7 +21,6 @@ class ProfileViewModel(
     private val _uiState = MutableStateFlow(ProfileUiState())
     val uiState: StateFlow<ProfileUiState> = _uiState.asStateFlow()
 
-    // Fungsi pembantu buat ambil data sensor
     fun getDeviceModel() = deviceInfo.getInfo()
     fun getBatteryLevel() = batteryInfo.getLevel()
     val isOnline: StateFlow<Boolean> = networkMonitor.isConnected

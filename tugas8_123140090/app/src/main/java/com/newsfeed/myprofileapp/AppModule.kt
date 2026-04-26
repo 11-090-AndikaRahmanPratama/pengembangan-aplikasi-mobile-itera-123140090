@@ -10,17 +10,14 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val appModule = module {
-    // 1. Platform APIs (Sebutin tipenya eksplisit biar gak "Cannot Infer")
     single<DeviceInfo> { DeviceInfoImpl() }
     single<BatteryInfo> { BatteryInfoImpl(androidContext()) }
     single<NetworkMonitor> { NetworkMonitorImpl(androidContext()) }
 
-    // 2. Data
     single { SettingsManager(androidContext()) }
     single { DatabaseProvider.getDatabase(androidContext()) }
     single { NoteRepository(get()) }
 
-    // 3. ViewModels
     viewModel { NotesViewModel(get()) }
     viewModel { ProfileViewModel(get(), get(), get()) }
 }

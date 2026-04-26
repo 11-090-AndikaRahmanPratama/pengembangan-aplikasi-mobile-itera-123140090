@@ -22,11 +22,9 @@ import java.util.*
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NotesScreen(viewModel: NotesViewModel) {
-    // Ngambil data secara real-time dari ViewModel
     val notes by viewModel.notes.collectAsState()
     val searchQuery by viewModel.searchQuery.collectAsState()
 
-    // State untuk ngatur muncul/tidaknya pop-up dialog
     var showDialog by remember { mutableStateOf(false) }
     var editNote by remember { mutableStateOf<Note?>(null) }
     var titleInput by remember { mutableStateOf("") }
@@ -53,7 +51,6 @@ fun NotesScreen(viewModel: NotesViewModel) {
                 .padding(paddingValues)
                 .padding(16.dp)
         ) {
-            // FITUR PENCARIAN
             OutlinedTextField(
                 value = searchQuery,
                 onValueChange = { viewModel.updateSearchQuery(it) },
@@ -65,7 +62,6 @@ fun NotesScreen(viewModel: NotesViewModel) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // DAFTAR CATATAN
             if (notes.isEmpty()) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     Text("Belum ada catatan. Yuk bikin baru!", color = MaterialTheme.colorScheme.outline)
@@ -93,7 +89,6 @@ fun NotesScreen(viewModel: NotesViewModel) {
         }
     }
 
-    // POP-UP UNTUK TAMBAH / EDIT CATATAN
     if (showDialog) {
         AlertDialog(
             onDismissRequest = { showDialog = false },
@@ -139,7 +134,6 @@ fun NotesScreen(viewModel: NotesViewModel) {
     }
 }
 
-// Komponen Desain untuk 1 Kotak Catatan
 @Composable
 fun NoteCard(note: Note, onClick: () -> Unit, onDelete: () -> Unit) {
     Card(
@@ -162,7 +156,6 @@ fun NoteCard(note: Note, onClick: () -> Unit, onDelete: () -> Unit) {
                 Text(text = note.content, style = MaterialTheme.typography.bodyMedium, maxLines = 2)
                 Spacer(modifier = Modifier.height(8.dp))
 
-                // Format Tanggal
                 val date = Date(note.created_at)
                 val format = SimpleDateFormat("dd MMM yyyy, HH:mm", Locale.getDefault())
                 Text(text = format.format(date), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
