@@ -72,7 +72,6 @@ fun MainScreen() {
                 }
             }
         ) { paddingValues ->
-            // NavHost sebagai container utama navigasi
             NavHost(
                 navController = navController,
                 startDestination = BottomNavItem.Notes.route,

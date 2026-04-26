@@ -9,6 +9,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import com.newsfeed.myprofileapp.screens.MainScreen
 import com.newsfeed.myprofileapp.ui.theme.MyProfileAppTheme
+import com.newsfeed.myprofileapp.screens.LatihanMainScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
