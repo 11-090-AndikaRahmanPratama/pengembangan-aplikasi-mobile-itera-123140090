@@ -59,5 +59,5 @@ end
 
 
 ## Video Demo
-Silakan tonton demonstrasi fitur aplikasi (Operasi CRUD, Real-time Search, DataStore Dark Mode, dan Simulasi Background Sync API) pada tautan berikut:
-**[https://drive.google.com/file/d/17zqqKwo8wMO6XYAyD4WQUGnRndy-uMmt/view?usp=sharing]**
+Silakan tonton demonstrasi fitur aplikasi (DI, device info, network status (on/off)) pada tautan berikut:
+**[https://drive.google.com/file/d/1dHcK3cAEBF-Zy3Z8KBUfcyhI0EJO_oSI/view]**
