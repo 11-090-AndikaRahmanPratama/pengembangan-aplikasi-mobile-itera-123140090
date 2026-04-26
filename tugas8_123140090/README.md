@@ -56,3 +56,8 @@ end
 | ![Device Info](./device_info&battery_info.png) | ![Online](./network_online.png) | ![Offline](./network_offline.png) |
 
 > **Note:** Status koneksi berubah secara reaktif menggunakan Kotlin Flow tanpa perlu melakukan refresh halaman.
+
+
+## Video Demo
+Silakan tonton demonstrasi fitur aplikasi (Operasi CRUD, Real-time Search, DataStore Dark Mode, dan Simulasi Background Sync API) pada tautan berikut:
+**[https://drive.google.com/file/d/17zqqKwo8wMO6XYAyD4WQUGnRndy-uMmt/view?usp=sharing]**
