@@ -9,13 +9,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 
-// 1. Device Info
 interface DeviceInfo { fun getInfo(): String }
 class DeviceInfoImpl : DeviceInfo {
     override fun getInfo(): String = "${Build.MANUFACTURER} ${Build.MODEL} (Android ${Build.VERSION.RELEASE})"
 }
 
-// 2. Battery Info
 interface BatteryInfo { fun getLevel(): Int }
 class BatteryInfoImpl(private val context: Context) : BatteryInfo {
     override fun getLevel(): Int {
@@ -24,7 +22,6 @@ class BatteryInfoImpl(private val context: Context) : BatteryInfo {
     }
 }
 
-// 3. Network Monitor (Real-time Version)
 interface NetworkMonitor {
     val isConnected: Flow<Boolean>
 }

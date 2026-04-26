@@ -108,13 +108,13 @@ fun LatihanNoteDetailScreen(noteId: Int, navController: NavController) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text("Detail Screen")
+        Text("Ini DetailScreen")
         Text("Note ID yang diterima: $noteId", color = MaterialTheme.colorScheme.primary)
         Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = {
             navController.popBackStack()
         }) {
-            Text("Kembali")
+            Text("Kembali (popBackStack)")
         }
     }
 }
