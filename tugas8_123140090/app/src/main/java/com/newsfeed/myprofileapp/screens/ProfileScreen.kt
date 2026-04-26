@@ -35,7 +35,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun ProfileScreen(
     settingsManager: SettingsManager,
-    viewModel: ProfileViewModel = koinViewModel() // GANTI PAKE koinViewModel()
+    viewModel: ProfileViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val isDarkMode by settingsManager.themeFlow.collectAsState(initial = false)
@@ -46,21 +46,18 @@ fun ProfileScreen(
     var editName by remember { mutableStateOf(uiState.name) }
     var editBio by remember { mutableStateOf(uiState.bio) }
 
-    // 1. Animasi untuk Background Utama
     val backgroundColor by animateColorAsState(
         targetValue = if (isDarkMode) Color(0xFF121212) else Color(0xFFF5F5F5),
         animationSpec = tween(durationMillis = 500),
         label = "bg_color_anim"
     )
 
-    // 2. Animasi Warna untuk Card (Kotak)
     val cardBackgroundColor by animateColorAsState(
         targetValue = if (isDarkMode) Color(0xFF1E1E1E) else Color.White,
         animationSpec = tween(durationMillis = 500),
         label = "card_bg_anim"
     )
 
-    // 3. Setup Warna Teks Dinamis
     val textColor = if (isDarkMode) Color.White else Color.Black
     val subTextColor = if (isDarkMode) Color.LightGray else Color.Gray
 
@@ -93,7 +90,7 @@ fun ProfileScreen(
         if (isEditing) {
             Card(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = cardBackgroundColor) // Terapkan warna Card dinamis
+                colors = CardDefaults.cardColors(containerColor = cardBackgroundColor)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text("Edit Profile", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = textColor)
@@ -128,7 +125,7 @@ fun ProfileScreen(
         } else {
             Card(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = cardBackgroundColor) // Terapkan warna Card dinamis
+                colors = CardDefaults.cardColors(containerColor = cardBackgroundColor)
             ) {
                 Column(
                     modifier = Modifier.padding(24.dp),
@@ -161,9 +158,9 @@ fun ProfileScreen(
         }
 
         Spacer(modifier = Modifier.height(16.dp))
-        InfoCard(cardBackgroundColor, textColor) // Passing warna ke fungsi Reusable
+        InfoCard(cardBackgroundColor, textColor)
         Spacer(modifier = Modifier.height(16.dp))
-        PortfolioCard(cardBackgroundColor, textColor) // Passing warna ke fungsi Reusable
+        PortfolioCard(cardBackgroundColor, textColor)
         Spacer(modifier = Modifier.height(16.dp))
         SystemInfoCard(viewModel, cardBackgroundColor, textColor)
         Spacer(modifier = Modifier.height(32.dp))
@@ -268,7 +265,6 @@ fun PortfolioCard(cardBgColor: Color, textColor: Color) {
 
 @Composable
 fun SystemInfoCard(viewModel: ProfileViewModel, cardBgColor: Color, textColor: Color) {
-    // 1. Ini bener, kita collect alirannya jadi state 'isOnline'
     val isOnline by viewModel.isOnline.collectAsState()
 
     Card(
@@ -288,7 +284,6 @@ fun SystemInfoCard(viewModel: ProfileViewModel, cardBgColor: Color, textColor: C
             Text("🔋 Baterai: ${viewModel.getBatteryLevel()}%", fontSize = 14.sp, color = textColor)
             Spacer(modifier = Modifier.height(4.dp))
 
-            // 2. DI SINI kuncinya: Pake variabel 'isOnline', JANGAN pake 'viewModel.isOnline()'
             val statusColor = if (isOnline) Color(0xFF4CAF50) else Color(0xFFF44336)
             Row {
                 Text("🌐 Koneksi: ", fontSize = 14.sp, color = textColor)
