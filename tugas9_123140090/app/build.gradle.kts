@@ -85,6 +85,9 @@ dependencies {
 
     // Serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
+
+    // Coil - load gambar di chat
+    implementation("io.coil-kt:coil-compose:2.5.0")
 }
 
 sqldelight {

@@ -1,5 +1,9 @@
 package com.newsfeed.myprofileapp.screens
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.StartOffset
 import androidx.compose.animation.core.animateFloat
@@ -16,17 +20,21 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.newsfeed.myprofileapp.viewmodel.ChatMessage
 import com.newsfeed.myprofileapp.viewmodel.ChatViewModel
-import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -34,11 +42,21 @@ fun ChatScreen(viewModel: ChatViewModel = koinViewModel()) {
     val uiState by viewModel.uiState.collectAsState()
     var inputText by remember { mutableStateOf("") }
     val listState = rememberLazyListState()
-    val coroutineScope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
+    val context = LocalContext.current
 
-    // scroll ke bawah kalau ada pesan baru
-    LaunchedEffect(uiState.messages.size) {
+    // picker gambar dari galeri
+    val imagePicker = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia()
+    ) { uri: Uri? ->
+        if (uri != null) {
+            viewModel.kirimGambar(context, uri)
+        }
+    }
+
+    // scroll ke bawah kalau ada pesan baru atau teks streaming berubah
+    val lastMessageText = uiState.messages.lastOrNull()?.text ?: ""
+    LaunchedEffect(uiState.messages.size, lastMessageText) {
         if (uiState.messages.isNotEmpty()) {
             listState.animateScrollToItem(uiState.messages.size - 1)
         }
@@ -82,7 +100,6 @@ fun ChatScreen(viewModel: ChatViewModel = koinViewModel()) {
                 .padding(paddingValues)
         ) {
             if (uiState.messages.isEmpty() && !uiState.sedangLoading) {
-                // tampilan awal kalau belum ada chat
                 Box(
                     modifier = Modifier
                         .weight(1f)
@@ -90,7 +107,7 @@ fun ChatScreen(viewModel: ChatViewModel = koinViewModel()) {
                     contentAlignment = Alignment.Center
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text("🤖", fontSize = 48.sp)
+                        Text("\uD83E\uDD16", fontSize = 48.sp)
                         Spacer(modifier = Modifier.height(12.dp))
                         Text(
                             "Halo! Saya asisten AI kamu.",
@@ -99,14 +116,13 @@ fun ChatScreen(viewModel: ChatViewModel = koinViewModel()) {
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
-                            "Tanya apa aja, atau minta rangkum catatan.",
+                            "Tanya apa aja, atau kirim gambar untuk dianalisis.",
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.outline
                         )
                     }
                 }
             } else {
-                // daftar pesan
                 LazyColumn(
                     state = listState,
                     modifier = Modifier
@@ -120,8 +136,7 @@ fun ChatScreen(viewModel: ChatViewModel = koinViewModel()) {
                         ChatBubble(message = msg)
                     }
 
-                    // indikator loading pas AI lagi mikir
-                    if (uiState.sedangLoading) {
+                    if (uiState.sedangLoading && (uiState.messages.isEmpty() || uiState.messages.last().isUser)) {
                         item {
                             TypingIndicator()
                         }
@@ -129,13 +144,25 @@ fun ChatScreen(viewModel: ChatViewModel = koinViewModel()) {
                 }
             }
 
-            // kotak input + tombol kirim
+            // input area: tombol gambar + text field + tombol kirim
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 8.dp, vertical = 8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                // tombol pilih gambar
+                IconButton(
+                    onClick = {
+                        imagePicker.launch(
+                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                        )
+                    },
+                    enabled = !uiState.sedangLoading
+                ) {
+                    Icon(Icons.Default.Add, contentDescription = "Pilih Gambar")
+                }
+
                 OutlinedTextField(
                     value = inputText,
                     onValueChange = { inputText = it },
@@ -144,7 +171,7 @@ fun ChatScreen(viewModel: ChatViewModel = koinViewModel()) {
                     shape = RoundedCornerShape(24.dp),
                     maxLines = 4
                 )
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.width(4.dp))
                 FilledIconButton(
                     onClick = {
                         if (inputText.isNotBlank()) {
@@ -194,12 +221,28 @@ fun ChatBubble(message: ChatMessage) {
             color = bgColor,
             modifier = Modifier.widthIn(max = 300.dp)
         ) {
-            Text(
-                text = message.text,
-                color = txtColor,
-                modifier = Modifier.padding(horizontal = 14.dp, vertical = 10.dp),
-                style = MaterialTheme.typography.bodyMedium
-            )
+            Column(modifier = Modifier.padding(horizontal = 14.dp, vertical = 10.dp)) {
+                // tampilkan gambar kalau ada
+                if (message.imageUri != null) {
+                    AsyncImage(
+                        model = message.imageUri,
+                        contentDescription = "Gambar",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .heightIn(max = 200.dp)
+                            .clip(RoundedCornerShape(8.dp)),
+                        contentScale = ContentScale.Crop
+                    )
+                    Spacer(modifier = Modifier.height(6.dp))
+                }
+                if (message.text.isNotEmpty()) {
+                    Text(
+                        text = message.text,
+                        color = txtColor,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+            }
         }
     }
 }

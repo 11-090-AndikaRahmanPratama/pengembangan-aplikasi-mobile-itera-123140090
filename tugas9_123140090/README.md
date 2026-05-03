@@ -7,17 +7,20 @@
 Aplikasi ini merupakan pengembangan dari Tugas 8 dengan penambahan fitur **AI Chat Assistant** menggunakan Google Gemini API. Tab baru ditambahkan di bottom navigation untuk fitur AI Chat, sementara semua fitur dari tugas sebelumnya tetap dipertahankan.
 
 ### Fitur Baru Tugas 9:
-1. **AI Chat Assistant:** Tab baru berisi chatbot berbasis Gemini 2.5 Flash. User bisa mengetik pertanyaan dan mendapat jawaban dari AI secara langsung di dalam aplikasi.
-2. **Multi-turn Conversation (Bonus +5%):** Riwayat percakapan disimpan selama sesi, sehingga AI bisa mengingat konteks percakapan sebelumnya. User juga bisa menghapus riwayat chat lewat tombol hapus di pojok kanan atas.
-3. **Error Handling:** Penanganan error untuk berbagai kasus: API key tidak valid (401), rate limit tercapai (429), tidak ada koneksi internet, dan error lainnya. Error ditampilkan lewat Snackbar.
-4. **Loading States:** Animasi typing indicator berupa tiga titik yang berkedip bergantian saat AI sedang memproses jawaban.
-5. **System Prompt:** AI dikonfigurasi dengan system prompt yang mengarahkannya sebagai asisten aplikasi MyProfileApp milik mahasiswa Teknik Informatika ITERA.
+1. **AI Chat Assistant:** Tab baru berisi chatbot berbasis Gemini 2.5 Flash. User bisa mengetik pertanyaan dan mendapat jawaban dari AI langsung di dalam aplikasi.
+2. **Multi-turn Conversation (Bonus +5%):** Riwayat percakapan disimpan selama sesi, AI mengingat konteks percakapan sebelumnya. User bisa menghapus riwayat lewat tombol di pojok kanan atas.
+3. **Image Analysis (Bonus +10%):** User bisa memilih gambar dari galeri lewat tombol "+" di input area, lalu AI akan menganalisis dan mendeskripsikan isi gambar tersebut.
+4. **Streaming Response (Bonus +5%):** Jawaban AI muncul secara bertahap (streaming), bukan menunggu seluruh respons selesai. Menggunakan SSE (Server-Sent Events) dari Gemini API.
+5. **Error Handling:** Penanganan error untuk berbagai kasus: API key tidak valid (401), rate limit (429), tidak ada koneksi internet, dan error lainnya. Ditampilkan lewat Snackbar.
+6. **Loading States:** Animasi typing indicator berupa tiga titik yang berkedip bergantian saat AI sedang memproses.
+7. **System Prompt:** AI dikonfigurasi dengan system prompt sebagai asisten aplikasi MyProfileApp milik mahasiswa ITERA.
 
 ### Tech Stack:
 - **Language:** Kotlin
 - **UI Framework:** Jetpack Compose + Material 3
 - **AI API:** Google Gemini 2.5 Flash
 - **HTTP Client:** Ktor Client
+- **Image Loading:** Coil
 - **DI Framework:** Koin
 - **Serialization:** kotlinx.serialization
 - **Async:** Kotlin Coroutines & Flow
@@ -27,13 +30,13 @@ Aplikasi ini merupakan pengembangan dari Tugas 8 dengan penambahan fitur **AI Ch
 ### Struktur File Baru (Tugas 9):
 ```
 ai/
-├── GeminiModels.kt      # Data class untuk request & response Gemini API
-├── GeminiService.kt     # Service HTTP ke Gemini API (multi-turn)
+├── GeminiModels.kt      # Data class request & response (termasuk InlineData untuk gambar)
+├── GeminiService.kt     # Service HTTP: chat, streaming, dan image analysis
 └── AIRepository.kt      # Repository layer dengan system prompt
 viewmodel/
-└── ChatViewModel.kt     # State management untuk halaman chat
+└── ChatViewModel.kt     # State management chat, streaming, dan kirim gambar
 screens/
-└── ChatScreen.kt        # UI halaman chat (bubble, typing indicator)
+└── ChatScreen.kt        # UI chat (bubble, image picker, typing indicator)
 ```
 
 ### Cara Setup API Key:
@@ -52,3 +55,7 @@ screens/
 | Empty State | Percakapan dengan AI | Typing Indicator |
 | :---: | :---: | :---: |
 | ![Empty](./empty.png) | ![Chat](./conversation.png) | ![Loading](./loading.png) |
+
+| Image Analysis | Error Handling |
+| :---: | :---: |
+| ![Image Analysis](./Image_analysis.png) | ![Error Handling](./error_handling.png) |
