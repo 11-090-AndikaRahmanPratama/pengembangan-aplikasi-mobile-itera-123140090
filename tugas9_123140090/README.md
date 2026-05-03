@@ -13,15 +13,6 @@ Aplikasi ini merupakan pengembangan dari Tugas 8 dengan penambahan fitur **AI Ch
 4. **Loading States:** Animasi typing indicator berupa tiga titik yang berkedip bergantian saat AI sedang memproses jawaban.
 5. **System Prompt:** AI dikonfigurasi dengan system prompt yang mengarahkannya sebagai asisten aplikasi MyProfileApp milik mahasiswa Teknik Informatika ITERA.
 
-### Fitur dari Tugas Sebelumnya:
-- CRUD Catatan dengan pencarian (SQLDelight)
-- Dark Mode yang berlaku di seluruh aplikasi (DataStore)
-- Dependency Injection menggunakan Koin
-- Device Info, Battery Monitoring, Network Monitoring (Reactive Flow)
-- Edit Profil dan Portofolio
-- Bottom Navigation (4 tab: Notes, AI Chat, Favorites, Profile)
-- Navigation Drawer
-
 ### Tech Stack:
 - **Language:** Kotlin
 - **UI Framework:** Jetpack Compose + Material 3
@@ -45,14 +36,6 @@ screens/
 └── ChatScreen.kt        # UI halaman chat (bubble, typing indicator)
 ```
 
-### File Dimodifikasi dari Tugas 8:
-- `build.gradle.kts` - Tambah dependency Ktor, kotlinx-serialization, dan BuildConfig
-- `MainActivity.kt` - Dark mode dibaca dari DataStore dan diterapkan ke seluruh app
-- `ui/theme/Theme.kt` - Hapus dynamic color supaya dark mode konsisten
-- `navigation/Screen.kt` - Tambah BottomNavItem.Chat
-- `screens/MainScreen.kt` - Tambah routing ke ChatScreen, 4 tab bottom navigation
-- `AppModule.kt` - Register HttpClient, GeminiService, AIRepository, ChatViewModel ke Koin
-
 ### Cara Setup API Key:
 1. Buka [Google AI Studio](https://aistudio.google.com)
 2. Klik **Get API Key** lalu **Create API Key**
@@ -69,8 +52,3 @@ screens/
 | Empty State | Percakapan dengan AI | Typing Indicator |
 | :---: | :---: | :---: |
 | ![Empty](./empty.png) | ![Chat](./conversation.png) | ![Loading](./loading.png) |
-
-### Fitur Tugas Sebelumnya
-| Device Info & Battery | Network Online | Network Offline |
-| :---: | :---: | :---: |
-| ![Device Info](./device_info&battery_info.png) | ![Online](./network_online.png) | ![Offline](./network_offline.png) |
